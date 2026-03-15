@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Advanced AI Workforce Website Builder</title>
+<style>
+body{
+font-family:Arial;
+margin:0;
+display:flex;
+height:100vh;
+background:#0f172a;
+color:white;
+overflow:hidden;
+}
+.sidebar{
+width:220px;
+background:#020617;
+padding:20px;
+}
+.sidebar h2{margin-top:0;}
+.sidebar li{list-style:none;padding:10px 0;cursor:pointer;}
+.main{flex:1;padding:20px;overflow:auto;}
+.rightpanel{width:300px;background:#020617;padding:20px;overflow:auto;}
+textarea{width:100%;height:100px;background:#111827;color:white;border:none;padding:10px;}
+button{background:#3b82f6;color:white;border:none;padding:10px 20px;margin-top:10px;cursor:pointer;}
+.card{background:#111827;padding:10px;margin-top:10px;border-radius:6px;animation:pulse 2s infinite;}
+@keyframes pulse{0%{opacity:0.8;}50%{opacity:1;}100%{opacity:0.8;}}
+.slider{width:100%;}
+.preview{background:white;color:black;padding:20px;margin-top:20px;}
+.chat{position:fixed;bottom:0;left:220px;right:300px;background:#020617;padding:10px;display:flex;}
+.chat input{flex:1;padding:10px;border:none;}
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+<h2>AI Workforce</h2>
+<ul>
+<li>Projects</li>
+<li>AI Employees</li>
+<li>Workforce</li>
+<li>Reports</li>
+<li>Settings</li>
+</ul>
+</div>
+
+<div class="main">
+<h1>Advanced AI Website Builder</h1>
+<p>Describe the website you want:</p>
+<textarea id="description" placeholder="Example: Modern coffee shop with menu, blog, and contact page"></textarea>
+<br><br>
+<label>AI Employees</label>
+<input type="range" min="1" max="10" value="3" id="slider" class="slider">
+<p id="price">Estimated Cost: $30/month</p>
+<button onclick="buildWebsite()">Start AI Workforce</button>
+<div id="employees"></div>
+<div id="preview"></div>
+<button onclick="downloadWebsite()">Download Website</button>
+</div>
+
+<div class="rightpanel">
+<h3>AI Workforce Activity</h3>
+<div id="activity"></div>
+</div>
+
+<div class="chat">
+<input id="chatInput" placeholder="Command your AI workforce...">
+<button onclick="chat()">Send</button>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>
+const slider=document.getElementById("slider")
+const price=document.getElementById("price")
+const roles=[
+"AI Website Builder",
+"AI Designer",
+"AI Content Writer",
+"AI SEO Specialist",
+"AI Marketing Assistant",
+"AI Analytics Manager",
+"AI Support Agent"
+]
+let websiteData={};
+
+slider.oninput=function(){
+let cost=slider.value*10
+price.innerText="Estimated Cost: $"+cost+"/month"
+}
+
+function log(text){
+let div=document.createElement("div")
+div.className="card"
+div.innerText=text
+document.getElementById("activity").prepend(div)
+}
+
+function createEmployees(count){
+let container=document.getElementById("employees")
+container.innerHTML=""
+for(let i=0;i<count;i++){
+let role=roles[i%roles.length]
+let card=document.createElement("div")
+card.className="card"
+card.innerHTML="<b>"+role+"</b><br>Status: Working"
+container.appendChild(card)
+}
+}
+
+function buildWebsite(){
+let description=document.getElementById("description").value
+let count=slider.value
+createEmployees(count)
+log("AI Website Builder created page structure")
+log("AI Designer generated layout")
+log("AI Content Writer wrote homepage content")
+log("AI SEO Specialist optimized metadata")
+
+// Generate real HTML website
+websiteData.html=`<!DOCTYPE html>
+<html>
+<head>
+<title>AI Generated Website</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<h1>${description}</h1>
+<nav>
+<ul>
+<li>Home</li><li>About</li><li>Services</li><li>Blog</li><li>Contact</li>
+</ul>
+</nav>
+<section>
+<h2>About</h2>
+<p>This page was generated automatically by your AI workforce.</p>
+</section>
+<section>
+<h2>Blog</h2>
+<p>Sample blog post content created by AI Content Writer.</p>
+</section>
+</body>
+</html>
+`;
+
+websiteData.css=`body{font-family:Arial;margin:0;padding:20px;}nav ul{list-style:none;display:flex;gap:20px;background:#f3f3f3;padding:10px;}section{margin-top:20px;}`
+
+let preview=document.getElementById("preview")
+preview.innerHTML=`<div class="preview"><h1>Website Preview</h1><p>${description}</p></div>`
+}
+
+function downloadWebsite(){
+let zip = new JSZip()
+zip.file("index.html",websiteData.html)
+zip.file("style.css",websiteData.css)
+zip.generateAsync({type:"blob"}).then(function(content){
+let a=document.createElement("a")
+a.href=URL.createObjectURL(content)
+a.download="AI_Generated_Website.zip"
+a.click()
+})
+log("Website files ready for download!")
+}
+
+function chat(){
+let cmd=document.getElementById("chatInput").value.toLowerCase()
+if(cmd.includes("contact")){
+log("AI Builder added Contact Page")
+websiteData.html=websiteData.html.replace("</body>",`<section><h2>Contact</h2><p>Contact form placeholder</p></section></body>`)
+}
+else if(cmd.includes("color")){
+log("AI Designer updated color theme")
+websiteData.css+="body{background:#e0f2fe;}"
+}
+else if(cmd.includes("blog")){
+log("AI Content Writer created blog section")
+websiteData.html=websiteData.html.replace("</body>",`<section><h2>New Blog</h2><p>AI generated blog content.</p></section></body>`)
+}
+else{
+log("AI Workforce processed command: "+cmd)
+}
+document.getElementById("chatInput").value=""
+}
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
