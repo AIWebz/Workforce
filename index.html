@@ -8,151 +8,80 @@
 
 body{
 margin:0;
-font-family:Inter,Segoe UI;
-background:#0b0f1f;
+font-family:Inter,system-ui;
+background:#0f1222;
 color:white;
-overflow:hidden;
 }
-
-/* Aurora Title */
-
-.aurora{
-background:linear-gradient(90deg,#3b82f6,#ec4899,#3b82f6);
-background-size:200%;
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
-animation:aurora 6s linear infinite;
-}
-
-@keyframes aurora{
-0%{background-position:0%}
-100%{background-position:200%}
-}
-
-/* Pages */
-
-.page{
-display:none;
-height:100vh;
-justify-content:center;
-align-items:center;
-flex-direction:column;
-}
-
-.active{
-display:flex;
-}
-
-/* Inputs */
-
-input{
-padding:12px;
-width:300px;
-margin:10px;
-border:none;
-border-radius:6px;
-}
-
-button{
-padding:12px 20px;
-border:none;
-border-radius:6px;
-background:linear-gradient(90deg,#3b82f6,#ec4899);
-color:white;
-cursor:pointer;
-}
-
-/* Main App */
-
-#app{
-display:none;
-height:100vh;
-flex-direction:column;
-}
-
-/* Topbar */
 
 .topbar{
 height:60px;
-background:#070a16;
 display:flex;
 align-items:center;
-justify-content:space-between;
 padding:0 30px;
-border-bottom:1px solid #1e233a;
+background:#0a0d1c;
+border-bottom:1px solid #1e2240;
 }
 
-.nav{
+.topbar h2{
+margin:0;
+}
+
+.layout{
 display:flex;
-gap:25px;
+height:calc(100vh - 60px);
 }
 
-/* Layout */
-
-.main{
-display:flex;
-flex:1;
-}
-
-/* Sidebar */
-
-.sidebar{
-width:230px;
-background:#070a16;
+.pages{
+width:180px;
+background:#0a0d1c;
 padding:20px;
-border-right:1px solid #1e233a;
+border-right:1px solid #1e2240;
+}
+
+.components{
+width:220px;
+background:#0a0d1c;
+padding:20px;
+border-right:1px solid #1e2240;
 overflow:auto;
 }
-
-/* Canvas */
 
 .canvas{
 flex:1;
-background:#0e1327;
+background:#15183a;
 padding:20px;
 overflow:auto;
 }
 
-/* Preview */
-
 .preview{
 width:350px;
-background:#0c1024;
-border-left:1px solid #1e233a;
+background:white;
+color:black;
+}
+
+.console{
+height:200px;
+background:#0a0d1c;
+border-top:1px solid #1e2240;
 padding:10px;
+overflow:auto;
 }
 
-/* AI room */
-
-.airoom{
-height:120px;
-background:#101740;
-position:relative;
-margin-bottom:20px;
+.block{
+background:#1d214a;
+padding:8px;
+margin-bottom:6px;
+cursor:pointer;
 }
 
-.ai{
-position:absolute;
-width:40px;
-transition:1s;
+.page{
+padding:6px;
+cursor:pointer;
 }
 
-/* Commit */
-
-.commit{
-background:#141a35;
-padding:10px;
-margin-bottom:8px;
-border-radius:6px;
-}
-
-/* Email */
-
-.email{
-background:#141a35;
-padding:10px;
-margin-bottom:8px;
-border-radius:6px;
+button{
+padding:8px 12px;
+margin-top:6px;
 }
 
 </style>
@@ -160,231 +89,148 @@ border-radius:6px;
 
 <body>
 
-<!-- Prompt Page -->
-
-<div id="promptPage" class="page active">
-
-<h1 class="aurora">Build Your AI Website</h1>
-
-<input id="sitePrompt" placeholder="Describe your website">
-
-<button onclick="goLogin()">Generate Website</button>
-
-</div>
-
-<!-- Login Page -->
-
-<div id="loginPage" class="page">
-
-<h2>Sign in to Continue</h2>
-
-<input id="email" placeholder="Email">
-
-<button onclick="login()">Sign in with Email</button>
-
-<button onclick="login()">Sign in with Google</button>
-
-</div>
-
-<!-- App -->
-
-<div id="app">
-
 <div class="topbar">
+<h2>AI Builder Pro</h2>
+</div>
 
-<h3 class="aurora">AI Workforce</h3>
+<div class="layout">
 
-<div class="nav">
+<div class="pages">
 
-<div>Dashboard</div>
-<div>Pages</div>
-<div>Workforce</div>
-<div>Inbox</div>
-<div>Commits</div>
+<h3>Pages</h3>
+
+<div class="page" onclick="loadPage('home')">Home</div>
+<div class="page" onclick="loadPage('about')">About</div>
+<div class="page" onclick="loadPage('contact')">Contact</div>
+
+<button onclick="addPage()">Add Page</button>
 
 </div>
 
-</div>
+<div class="components">
 
-<div class="main">
+<h3>Components</h3>
 
-<div class="sidebar">
-
-<h3>AI Workforce</h3>
-
-<div class="airoom" id="airoom"></div>
-
-<h3>Inbox</h3>
-
-<div id="inbox"></div>
-
-<h3>Commits</h3>
-
-<div id="commits"></div>
-
-<button onclick="exportSite()">Export Website</button>
+<div class="block" onclick="addComponent('hero')">Hero</div>
+<div class="block" onclick="addComponent('features')">Features</div>
+<div class="block" onclick="addComponent('gallery')">Gallery</div>
+<div class="block" onclick="addComponent('pricing')">Pricing</div>
+<div class="block" onclick="addComponent('testimonials')">Testimonials</div>
+<div class="block" onclick="addComponent('faq')">FAQ</div>
+<div class="block" onclick="addComponent('contact')">Contact Form</div>
 
 </div>
 
 <div class="canvas" id="canvas">
 
-<h2>Generating Website...</h2>
+<h2>Start building</h2>
 
 </div>
 
 <div class="preview">
-
-<h3>Live Preview</h3>
-
-<iframe id="previewFrame" style="width:100%;height:90%;border:none;background:white"></iframe>
-
+<iframe id="preview" style="width:100%;height:100%;border:none"></iframe>
 </div>
 
 </div>
+
+<div class="console" id="console">
+
+AI Console Ready
 
 </div>
 
 <script>
 
-/* Page flow */
-
-function goLogin(){
-
-document.getElementById("promptPage").classList.remove("active")
-document.getElementById("loginPage").classList.add("active")
-
+let pages={
+home:"",
+about:"",
+contact:""
 }
 
-function login(){
+let current="home"
 
-document.getElementById("loginPage").classList.remove("active")
-document.getElementById("app").style.display="flex"
+function loadPage(name){
 
-generateSite()
+current=name
 
-}
-
-/* AI agents */
-
-const employees=[
-
-{name:"Designer",icon:"https://cdn-icons-png.flaticon.com/512/4140/4140048.png"},
-{name:"Developer",icon:"https://cdn-icons-png.flaticon.com/512/4140/4140061.png"},
-{name:"Writer",icon:"https://cdn-icons-png.flaticon.com/512/4149/4149677.png"},
-{name:"SEO",icon:"https://cdn-icons-png.flaticon.com/512/921/921347.png"}
-
-]
-
-function spawnAgents(){
-
-let room=document.getElementById("airoom")
-
-employees.forEach((e,i)=>{
-
-let ai=document.createElement("img")
-
-ai.src=e.icon
-ai.className="ai"
-
-ai.style.left=(i*50)+"px"
-ai.style.top="40px"
-
-room.appendChild(ai)
-
-setInterval(()=>{
-
-ai.style.left=Math.random()*160+"px"
-ai.style.top=Math.random()*60+"px"
-
-},3000)
-
-})
-
-}
-
-spawnAgents()
-
-/* AI site generation */
-
-function generateSite(){
-
-let prompt=document.getElementById("sitePrompt").value
-
-canvas.innerHTML=""
-
-let hero=document.createElement("div")
-hero.innerHTML="<h1>"+prompt+"</h1>"
-
-let about=document.createElement("div")
-about.innerHTML="<h2>About</h2><p>Generated content</p>"
-
-let contact=document.createElement("div")
-contact.innerHTML="<h2>Contact</h2>contact@email.com"
-
-canvas.appendChild(hero)
-canvas.appendChild(about)
-canvas.appendChild(contact)
-
-commit("AI generated website")
-email("AI Builder","Website generated")
+canvas.innerHTML=pages[name]
 
 updatePreview()
 
 }
 
-/* Preview */
+function addPage(){
+
+let name=prompt("Page name")
+
+pages[name]=""
+
+let div=document.createElement("div")
+
+div.innerText=name
+
+div.className="page"
+
+div.onclick=()=>loadPage(name)
+
+document.querySelector(".pages").appendChild(div)
+
+}
+
+function addComponent(type){
+
+let html=""
+
+if(type=="hero")
+html="<section><h1>Hero Section</h1><p>Welcome</p></section>"
+
+if(type=="features")
+html="<section><h2>Features</h2><ul><li>Feature</li></ul></section>"
+
+if(type=="gallery")
+html="<section><h2>Gallery</h2><img src='https://picsum.photos/300'></section>"
+
+if(type=="pricing")
+html="<section><h2>Pricing</h2><p>$29/mo</p></section>"
+
+if(type=="testimonials")
+html="<section><h2>Testimonials</h2><p>Great service!</p></section>"
+
+if(type=="faq")
+html="<section><h2>FAQ</h2><p>Common questions</p></section>"
+
+if(type=="contact")
+html="<section><h2>Contact</h2><input placeholder='Email'></section>"
+
+canvas.innerHTML+=html
+
+pages[current]=canvas.innerHTML
+
+updatePreview()
+
+analyzeCode()
+
+}
 
 function updatePreview(){
 
-let html=canvas.innerHTML
-
-previewFrame.srcdoc="<html><body>"+html+"</body></html>"
+preview.srcdoc=canvas.innerHTML
 
 }
 
-/* Commit */
+function analyzeCode(){
 
-function commit(msg){
+let code=canvas.innerHTML
 
-let div=document.createElement("div")
-div.className="commit"
-div.innerText=msg
+let report="QA Agent Report:\n"
 
-commits.prepend(div)
+if(!code.includes("</section>"))
+report+="Warning: missing closing section tag\n"
 
-}
+if(code.length<50)
+report+="Page looks empty\n"
 
-/* Inbox */
-
-function email(title,msg){
-
-let div=document.createElement("div")
-
-div.className="email"
-
-div.innerHTML="<b>"+title+"</b><br>"+msg
-
-inbox.prepend(div)
-
-}
-
-/* Export */
-
-function exportSite(){
-
-let html=canvas.innerHTML
-
-let file="<html><body>"+html+"</body></html>"
-
-let blob=new Blob([file],{type:"text/html"})
-
-let a=document.createElement("a")
-
-a.href=URL.createObjectURL(blob)
-
-a.download="website.html"
-
-a.click()
+document.getElementById("console").innerText=report
 
 }
 
