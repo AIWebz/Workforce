@@ -1,318 +1,474 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<title>AI Workforce Website Builder - Immersive</title>
+<title>WorkForce Ai</title>
+
 <style>
-/* === Reset & Fonts === */
-* {margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif;}
-body {display:flex; height:100vh; background:#f4f6f8; color:#1f2937; overflow:hidden;}
 
-/* === Sidebar === */
-.sidebar {
-  width:240px;
-  background:#ffffff;
-  border-right:1px solid #e2e8f0;
-  padding:20px;
-  display:flex;
-  flex-direction:column;
+/* ===== GLOBAL ===== */
+
+body{
+margin:0;
+font-family:Segoe UI;
+background:#0c0f1a;
+color:white;
 }
-.sidebar h2{margin-bottom:10px;color:#4f46e5;}
-.sidebar ul{list-style:none;padding:0;margin:0;flex:1;overflow-y:auto;}
-.sidebar li{
-  padding:10px; cursor:pointer; border-radius:8px; margin-bottom:5px;
-  transition:0.2s; display:flex;align-items:center;
+
+/* ===== AURORA TEXT ===== */
+
+.aurora{
+background:linear-gradient(90deg,#3b82f6,#ec4899,#3b82f6);
+background-size:200%;
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+animation:aurora 6s infinite linear;
 }
-.sidebar li:hover{background:#eef2ff;}
 
-/* === Main Content === */
-.main {flex:1; display:flex; flex-direction:column; overflow:hidden;}
+@keyframes aurora{
+0%{background-position:0%}
+100%{background-position:200%}
+}
 
-/* === Top Nav === */
+/* ===== TOP NAV ===== */
+
 .topnav{
-  height:60px;
-  background:#4f46e5;
-  color:white;
-  display:flex;
-  align-items:center;
-  padding:0 20px;
-  font-weight:bold;
-  font-size:18px;
-  flex-shrink:0;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:15px 30px;
+background:#0b1020;
+border-bottom:1px solid #1f2937;
 }
 
-/* === Content Area === */
-.content {display:flex; flex:1; overflow:hidden;}
+.navlinks{
+display:flex;
+gap:30px;
+}
 
-/* === Workspace Section === */
-.workspace {flex:2; padding:20px; overflow:auto; background:#f9fafb; position:relative; border-right:1px solid #e2e8f0; border-radius:0;}
-#workspaceArea {position:relative; width:100%; height:300px; background:#f3f4f6; border-radius:12px; border:1px solid #e5e7eb; overflow:hidden; margin-top:10px;}
-.workspace img.avatar {position:absolute; width:50px; height:50px; border-radius:50%; transition:0.3s;}
+.navlinks div{
+cursor:pointer;
+opacity:.8;
+}
 
-/* === Right Panel === */
-.rightpanel {width:300px; background:#ffffff; border-left:1px solid #e2e8f0; padding:20px; overflow-y:auto;}
-.employee-card{display:flex;align-items:center;background:#eef2ff;border-radius:12px;padding:5px 10px;margin-bottom:10px;font-size:14px;justify-content:space-between;position:relative;}
-.employee-card img.avatar{width:40px;height:40px;border-radius:50%;margin-right:10px;}
+.navlinks div:hover{
+opacity:1;
+}
 
-/* === Inputs & Buttons === */
-textarea,input[type=text]{width:100%; background:#f3f4f6; border:none; padding:10px; border-radius:8px; margin-top:10px; font-size:14px;}
-button{background:#4f46e5;color:white;border:none;padding:10px 20px;border-radius:8px;margin-top:10px;cursor:pointer;transition:0.2s;font-weight:bold;}
-button:hover{background:#6366f1;}
-.slider{width:100%;margin-top:10px;}
-.selectable-roles{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;}
-.role-card{padding:5px 10px;border-radius:12px;background:#e0e7ff;cursor:pointer;font-size:13px;transition:0.2s;}
-.role-card.selected{background:#4f46e5;color:white;}
+/* ===== LAYOUT ===== */
 
-/* === Inbox === */
-#inbox{background:#fff1f3;padding:10px;border-radius:12px;max-height:180px;overflow:auto;margin-top:10px;}
-.inbox-email{background:#fce7f3;padding:5px 10px;border-radius:8px;margin-bottom:5px;font-size:12px;cursor:pointer;}
-.inbox-email:hover{background:#fbb6ce;}
+.container{
+padding:40px;
+}
 
-/* === Website Preview === */
-#previewContainer {background:white;padding:10px;border-radius:12px;box-shadow:0 2px 5px rgba(0,0,0,0.1); margin-top:10px; height:400px; overflow:auto;}
-iframe {width:100%; height:100%; border:none; border-radius:12px;}
+/* ===== CARDS ===== */
+
+.card{
+background:#12172b;
+padding:25px;
+border-radius:12px;
+margin-bottom:25px;
+box-shadow:0 5px 20px rgba(0,0,0,.4);
+}
+
+/* ===== INPUTS ===== */
+
+textarea,input{
+width:100%;
+padding:12px;
+border-radius:8px;
+border:none;
+margin-top:10px;
+background:#1a2040;
+color:white;
+}
+
+button{
+background:linear-gradient(90deg,#3b82f6,#ec4899);
+border:none;
+padding:12px 20px;
+border-radius:10px;
+color:white;
+font-weight:bold;
+cursor:pointer;
+margin-top:15px;
+}
+
+/* ===== EMPLOYEE GRID ===== */
+
+.employee-grid{
+display:grid;
+grid-template-columns:repeat(auto-fill,150px);
+gap:20px;
+}
+
+.employee{
+background:#1a2040;
+border-radius:12px;
+padding:15px;
+text-align:center;
+cursor:pointer;
+}
+
+.employee img{
+width:70px;
+height:70px;
+border-radius:50%;
+margin-bottom:10px;
+}
+
+/* ===== WORKFORCE ===== */
+
+.employee-card{
+display:flex;
+align-items:center;
+gap:15px;
+margin-bottom:15px;
+background:#1a2040;
+padding:10px;
+border-radius:10px;
+}
+
+.employee-card img{
+width:45px;
+border-radius:50%;
+}
+
+/* ===== INBOX ===== */
+
+.email{
+background:#1a2040;
+padding:10px;
+border-radius:8px;
+margin-bottom:10px;
+cursor:pointer;
+}
+
+/* ===== WEBSITE PREVIEW ===== */
+
+iframe{
+width:100%;
+height:500px;
+border:none;
+border-radius:10px;
+background:white;
+}
+
 </style>
 </head>
+
 <body>
 
-<!-- Sidebar -->
-<div class="sidebar">
-<h2>Workforces</h2>
-<ul id="workforceList"></ul>
-<button onclick="createWorkforcePrompt()">+ Create Workforce</button>
+<!-- TOP NAV -->
+
+<div class="topnav">
+
+<h2 class="aurora">AI Workforce Builder</h2>
+
+<div class="navlinks">
+<div onclick="show('dashboard')">Dashboard</div>
+<div onclick="show('workforce')">Workforce</div>
+<div onclick="show('inbox')">Inbox</div>
+<div onclick="show('builder')">Website Builder</div>
 </div>
 
-<!-- Main -->
-<div class="main">
-<div class="topnav">AI Workforce Website Builder</div>
-<div class="content">
-<div class="workspace">
-<!-- Create Workforce -->
-<div id="createWorkforceSection">
-<p>Name your Workforce:</p>
-<input type="text" id="workforceName" placeholder="Team Name">
-<button onclick="createWorkforce()">Create Workforce</button>
 </div>
 
-<!-- Setup Workforce -->
-<div id="setupWorkforceSection" style="display:none;">
-<h3>Configure Workforce</h3>
-<label>Number of Employees:</label>
-<input type="range" min="1" max="10" value="3" id="employeeCount" class="slider">
-<p id="employeeCountText">3 employees selected</p>
-<h3>Select Employee Roles:</h3>
-<div class="selectable-roles" id="roleSelection"></div>
-<h3>Website Prompt:</h3>
-<textarea id="websitePrompt" placeholder="Describe your website"></textarea>
+<div class="container">
+
+<!-- DASHBOARD -->
+
+<div id="dashboard" class="page">
+
+<div class="card">
+
+<h2 class="aurora">Build Websites With Your AI Workforce</h2>
+
+<p>Describe the website you want and your AI employees will build it.</p>
+
+</div>
+
+</div>
+
+<!-- WEBSITE BUILDER -->
+
+<div id="builder" class="page" style="display:none">
+
+<div class="card">
+
+<h3>Describe your website</h3>
+
+<textarea id="prompt" rows="4"
+placeholder="Example: A modern coffee shop website with menu, blog and online ordering"></textarea>
+
+<h3>Choose employees</h3>
+
+<div class="employee-grid">
+
+<div class="employee" onclick="selectRole('designer')">
+<img src="https://cdn-icons-png.flaticon.com/512/921/921347.png">
+Designer
+</div>
+
+<div class="employee" onclick="selectRole('writer')">
+<img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
+Writer
+</div>
+
+<div class="employee" onclick="selectRole('seo')">
+<img src="https://cdn-icons-png.flaticon.com/512/4248/4248443.png">
+SEO
+</div>
+
+<div class="employee" onclick="selectRole('builder')">
+<img src="https://cdn-icons-png.flaticon.com/512/2620/2620971.png">
+Builder
+</div>
+
+<div class="employee" onclick="selectRole('analytics')">
+<img src="https://cdn-icons-png.flaticon.com/512/4149/4149677.png">
+Analytics
+</div>
+
+</div>
+
 <button onclick="buildWebsite()">Build Website</button>
+
 </div>
 
-<!-- Employee Management -->
-<h3>Employees</h3>
+<div class="card">
+
+<h3>Website Preview</h3>
+
+<iframe id="preview"></iframe>
+
+<button onclick="downloadSite()">Download Website</button>
+
+</div>
+
+</div>
+
+<!-- WORKFORCE -->
+
+<div id="workforce" class="page" style="display:none">
+
+<div class="card">
+
+<h3>Your AI Employees</h3>
+
 <div id="employees"></div>
 
-<!-- Workspace Animated Area -->
-<h3>Workspace</h3>
-<div id="workspaceArea"></div>
+</div>
 
-<!-- Inbox -->
+</div>
+
+<!-- INBOX -->
+
+<div id="inbox" class="page" style="display:none">
+
+<div class="card">
+
 <h3>Inbox</h3>
-<div id="inbox"></div>
 
-<!-- Website Preview -->
-<h3>Website Preview</h3>
-<div id="previewContainer"><iframe id="websitePreview"></iframe></div>
-<button onclick="downloadWebsite()">Download Website</button>
+<div id="emails"></div>
+
 </div>
 
-<!-- Right Panel -->
-<div class="rightpanel">
-<h3>Activity Log</h3>
-<div id="activity"></div>
 </div>
-</div>
+
 </div>
 
 <script>
-// === Core Data ===
-let workforces=[], selectedWorkforce=null, websiteData={}
-const rolesList=["AI Website Builder","AI Designer","AI Content Writer","AI SEO Specialist","AI Marketing Assistant","AI Analytics Manager","AI Support Agent"]
-const avatars=[
-"https://i.ibb.co/0j0kq4F/chibi1.png",
-"https://i.ibb.co/bWP0fRk/chibi2.png",
-"https://i.ibb.co/yfF3Y3r/chibi3.png",
-"https://i.ibb.co/Khb2bZf/chibi4.png",
-"https://i.ibb.co/qD0WvVH/chibi5.png",
-"https://i.ibb.co/6Xb3Yf2/chibi6.png",
-"https://i.ibb.co/FHkYq7x/chibi7.png",
-"https://i.ibb.co/Kq8y3F6/chibi8.png"
-]
 
-// === Workforce Management ===
-function createWorkforcePrompt(){
-document.getElementById("createWorkforceSection").style.display="block"
-document.getElementById("setupWorkforceSection").style.display="none"
-document.getElementById("workforceName").value=""
-}
-function createWorkforce(){
-let name=document.getElementById("workforceName").value.trim()
-if(!name){alert("Enter a workforce name"); return;}
-let workforce={name:name,id:Date.now(),employees:[],roles:[],inbox:[]}
-workforces.push(workforce)
-selectedWorkforce=workforce
-updateWorkforceList()
-setupWorkforceUI()
-}
-function updateWorkforceList(){
-let list=document.getElementById("workforceList")
-list.innerHTML=""
-workforces.forEach(wf=>{
-let li=document.createElement("li")
-li.innerText=wf.name
-li.onclick=()=>selectWorkforce(wf.id)
-list.appendChild(li)
-})
-}
-function selectWorkforce(id){
-selectedWorkforce=workforces.find(w=>w.id===id)
-setupWorkforceUI()
-}
-function setupWorkforceUI(){
-document.getElementById("createWorkforceSection").style.display="none"
-document.getElementById("setupWorkforceSection").style.display="block"
-document.getElementById("employeeCount").value=selectedWorkforce.employees.length || 3
-document.getElementById("employeeCountText").innerText=(selectedWorkforce.employees.length || 3)+" employees selected"
-let container=document.getElementById("roleSelection")
-container.innerHTML=""
-rolesList.forEach(role=>{
-let card=document.createElement("div")
-card.className="role-card"
-card.innerText=role
-if(selectedWorkforce.roles.includes(role))card.classList.add("selected")
-card.onclick=()=>{
-if(selectedWorkforce.roles.includes(role)){
-selectedWorkforce.roles=selectedWorkforce.roles.filter(r=>r!==role)
-card.classList.remove("selected")
-}else{
-selectedWorkforce.roles.push(role)
-card.classList.add("selected")
-}}
-container.appendChild(card)
-})
-}
-document.getElementById("employeeCount").oninput=function(){
-let count=this.value
-document.getElementById("employeeCountText").innerText=count+" employees selected"
+/* ===== NAVIGATION ===== */
+
+function show(id){
+
+document.querySelectorAll(".page").forEach(p=>p.style.display="none")
+
+document.getElementById(id).style.display="block"
+
 }
 
-// === Logging ===
-function log(text){
+/* ===== EMPLOYEE SYSTEM ===== */
+
+let roles=[]
+let siteHTML=""
+
+function selectRole(role){
+
+if(!roles.includes(role))
+roles.push(role)
+
+}
+
+/* ===== INBOX ===== */
+
+function sendEmail(title,message){
+
 let div=document.createElement("div")
-div.innerText=text
-document.getElementById("activity").prepend(div)
-}
-function inboxLog(text,details){
-let div=document.createElement("div")
-div.className="inbox-email"
-div.innerText=text
-div.onclick=()=>alert(details)
-document.getElementById("inbox").prepend(div)
-if(selectedWorkforce) selectedWorkforce.inbox.push({text,text,details})
+div.className="email"
+div.innerHTML="<b>"+title+"</b><br>"+message
+
+document.getElementById("emails").prepend(div)
+
 }
 
-// === Build Website & Animate Workspace ===
-function buildWebsite(){
-if(!selectedWorkforce){alert("Select a workforce"); return;}
-let desc=document.getElementById("websitePrompt").value.trim()
-if(!desc){alert("Enter prompt"); return;}
-let count=parseInt(document.getElementById("employeeCount").value)
-selectedWorkforce.employees=[]
-let workspace=document.getElementById("workspaceArea")
-workspace.innerHTML=""
-for(let i=0;i<count;i++){
-let role=selectedWorkforce.roles[i % selectedWorkforce.roles.length] || rolesList[i % rolesList.length]
-let avatar=avatars[i % avatars.length]
-let emp={role,avatar,x:20+ i*60, y:20, dx:0, dy:0, task:desc}
-selectedWorkforce.employees.push(emp)
-let img=document.createElement("img")
-img.src=avatar
-img.className="avatar"
-img.style.left=emp.x+"px"
-img.style.top=emp.y+"px"
-workspace.appendChild(img)
-emp.img=img
-simulateEmployeeWork(emp)
-}
-renderEmployees()
-generateWebsite(desc)
-}
+/* ===== WORKFORCE DISPLAY ===== */
 
-// Simulate each employee working
-function simulateEmployeeWork(emp){
-let steps=0
-let interval=setInterval(()=>{
-if(steps<20){
-emp.img.style.top=parseInt(emp.img.style.top)+2+"px"
-steps++
-}else{
-clearInterval(interval)
-inboxLog(emp.role+" completed a task","Task: "+emp.task)
-updateWebsitePreview(emp)
-}
-},100)
-}
-
-// Update preview live
-function updateWebsitePreview(emp){
-let iframe=document.getElementById("websitePreview")
-let doc=iframe.contentDocument||iframe.contentWindow.document
-if(!doc.body.innerHTML.includes(emp.task)){
-doc.body.innerHTML+=`<section><h2>${emp.role}</h2><p>${emp.task}</p></section>`
-}
-}
-
-// Display employees in management
 function renderEmployees(){
-let empContainer=document.getElementById("employees")
-empContainer.innerHTML="<h3>Employees:</h3>"
-selectedWorkforce.employees.forEach(e=>{
+
+let container=document.getElementById("employees")
+
+container.innerHTML=""
+
+roles.forEach(r=>{
+
+let icon={
+designer:"https://cdn-icons-png.flaticon.com/512/921/921347.png",
+writer:"https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
+seo:"https://cdn-icons-png.flaticon.com/512/4248/4248443.png",
+builder:"https://cdn-icons-png.flaticon.com/512/2620/2620971.png",
+analytics:"https://cdn-icons-png.flaticon.com/512/4149/4149677.png"
+}[r]
+
 let div=document.createElement("div")
 div.className="employee-card"
-div.innerHTML=`<img class="avatar" src="${e.avatar}"> <b>${e.role}</b> Status: working`
-empContainer.appendChild(div)
+
+div.innerHTML="<img src='"+icon+"'>"+r
+
+container.appendChild(div)
+
 })
+
 }
 
-// Generate single-file website HTML
-function generateWebsite(prompt){
-websiteData.html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${selectedWorkforce.name}</title>
+/* ===== WEBSITE GENERATION ===== */
+
+function buildWebsite(){
+
+let prompt=document.getElementById("prompt").value
+
+renderEmployees()
+
+sendEmail("AI Builder","Building website based on prompt")
+
+siteHTML=`
+
+<!DOCTYPE html>
+<html>
+<head>
+
 <style>
-body{font-family:'Segoe UI',sans-serif;margin:0;padding:20px;background:#f9fafb;color:#1f2937;}
-nav ul{list-style:none;display:flex;gap:20px;background:#4f46e5;padding:10px;border-radius:8px;color:white;}
-nav li{cursor:pointer;color:white;padding:5px 10px;border-radius:6px;}
-nav li:hover{background:#6366f1;}
-section{margin-top:20px;background:white;padding:15px;border-radius:8px;box-shadow:0 2px 5px rgba(0,0,0,0.1);}
-</style></head><body>
-<h1>${prompt}</h1>
-<nav><ul><li>Home</li><li>About</li><li>Services</li><li>Blog</li><li>Contact</li></ul></nav>
-<section><h2>About</h2><p>Generated by '${selectedWorkforce.name}' AI Workforce.</p></section>
-<section><h2>Services</h2><p>AI generated services based on: "${prompt}".</p></section>
-<section><h2>Blog</h2><p>AI generated blog content: "${prompt}".</p></section>
-<section><h2>Contact</h2><p>Email: contact@example.com</p></section>
-</body></html>`
-document.getElementById("websitePreview").srcdoc=websiteData.html
+
+body{
+font-family:Segoe UI;
+margin:0;
+background:#f9fafb;
+color:#111;
 }
 
-// Download single-file website
-function downloadWebsite(){
-if(!websiteData.html){alert("Build website first"); return;}
-let a=document.createElement("a")
-let blob=new Blob([websiteData.html],{type:"text/html"})
-a.href=URL.createObjectURL(blob)
-a.download=selectedWorkforce.name.replace(/\s+/g,"_")+".html"
-a.click()
-log("Website ready for download!")
+header{
+background:linear-gradient(90deg,#3b82f6,#ec4899);
+color:white;
+padding:40px;
+text-align:center;
 }
+
+nav{
+background:#111;
+color:white;
+padding:10px;
+display:flex;
+gap:20px;
+justify-content:center;
+}
+
+section{
+padding:40px;
+}
+
+.card{
+background:white;
+padding:20px;
+margin:20px;
+border-radius:10px;
+box-shadow:0 5px 15px rgba(0,0,0,.1);
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+<h1>${prompt}</h1>
+<p>Built by AI Workforce</p>
+</header>
+
+<nav>
+Home
+About
+Services
+Blog
+Contact
+</nav>
+
+<section>
+
+<div class="card">
+<h2>About</h2>
+<p>This website was generated from the prompt:</p>
+<p><b>${prompt}</b></p>
+</div>
+
+<div class="card">
+<h2>Services</h2>
+<p>AI generated services for your business.</p>
+</div>
+
+<div class="card">
+<h2>Blog</h2>
+<p>Future blog posts generated by AI employees.</p>
+</div>
+
+<div class="card">
+<h2>Contact</h2>
+<p>Email: contact@example.com</p>
+</div>
+
+</section>
+
+</body>
+</html>
+
+`
+
+document.getElementById("preview").srcdoc=siteHTML
+
+sendEmail("Designer","Layout created")
+sendEmail("Writer","Content generated")
+sendEmail("SEO","Metadata optimized")
+
+}
+
+/* ===== DOWNLOAD ===== */
+
+function downloadSite(){
+
+let a=document.createElement("a")
+
+let blob=new Blob([siteHTML],{type:"text/html"})
+
+a.href=URL.createObjectURL(blob)
+
+a.download="ai-website.html"
+
+a.click()
+
+}
+
 </script>
 
 </body>
