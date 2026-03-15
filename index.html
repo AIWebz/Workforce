@@ -2,14 +2,14 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>WorkForce Ai</title>
+<title>AI Workforce</title>
 
 <style>
 
 body{
 margin:0;
 font-family:Inter,Segoe UI;
-background:#0a0d1f;
+background:#0b0f1f;
 color:white;
 overflow:hidden;
 }
@@ -29,16 +29,57 @@ animation:aurora 6s linear infinite;
 100%{background-position:200%}
 }
 
-/* Top nav */
+/* Pages */
+
+.page{
+display:none;
+height:100vh;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+}
+
+.active{
+display:flex;
+}
+
+/* Inputs */
+
+input{
+padding:12px;
+width:300px;
+margin:10px;
+border:none;
+border-radius:6px;
+}
+
+button{
+padding:12px 20px;
+border:none;
+border-radius:6px;
+background:linear-gradient(90deg,#3b82f6,#ec4899);
+color:white;
+cursor:pointer;
+}
+
+/* Main App */
+
+#app{
+display:none;
+height:100vh;
+flex-direction:column;
+}
+
+/* Topbar */
 
 .topbar{
 height:60px;
+background:#070a16;
 display:flex;
 align-items:center;
 justify-content:space-between;
 padding:0 30px;
-background:#060915;
-border-bottom:1px solid #1b2140;
+border-bottom:1px solid #1e233a;
 }
 
 .nav{
@@ -46,29 +87,20 @@ display:flex;
 gap:25px;
 }
 
-.nav div{
-cursor:pointer;
-opacity:.7;
-}
-
-.nav div:hover{
-opacity:1;
-}
-
 /* Layout */
 
 .main{
 display:flex;
-height:calc(100vh - 60px);
+flex:1;
 }
 
 /* Sidebar */
 
 .sidebar{
-width:240px;
-background:#070b1c;
-border-right:1px solid #1b2140;
+width:230px;
+background:#070a16;
 padding:20px;
+border-right:1px solid #1e233a;
 overflow:auto;
 }
 
@@ -76,94 +108,50 @@ overflow:auto;
 
 .canvas{
 flex:1;
-background:#0e1330;
+background:#0e1327;
 padding:20px;
 overflow:auto;
 }
 
-/* Toolbox */
+/* Preview */
 
-.toolbox{
-width:200px;
-background:#070b1c;
-border-right:1px solid #1b2140;
-padding:20px;
-}
-
-.block{
-background:#1c2245;
+.preview{
+width:350px;
+background:#0c1024;
+border-left:1px solid #1e233a;
 padding:10px;
-margin-bottom:10px;
-border-radius:6px;
-cursor:grab;
 }
 
 /* AI room */
 
 .airoom{
-height:150px;
+height:120px;
 background:#101740;
 position:relative;
+margin-bottom:20px;
 }
-
-/* AI agents */
 
 .ai{
 position:absolute;
-width:45px;
+width:40px;
 transition:1s;
 }
 
-/* Chat */
-
-.chat{
-width:300px;
-background:#070b1c;
-border-left:1px solid #1b2140;
-display:flex;
-flex-direction:column;
-}
-
-.chatlog{
-flex:1;
-overflow:auto;
-padding:10px;
-}
-
-.chatinput{
-display:flex;
-}
-
-.chatinput input{
-flex:1;
-padding:10px;
-background:#0f1435;
-border:none;
-color:white;
-}
-
-.chatinput button{
-width:80px;
-border:none;
-background:linear-gradient(90deg,#3b82f6,#ec4899);
-color:white;
-}
-
-/* Commit timeline */
+/* Commit */
 
 .commit{
 background:#141a35;
 padding:10px;
-margin-bottom:10px;
+margin-bottom:8px;
 border-radius:6px;
 }
 
-/* Inbox */
+/* Email */
 
 .email{
 background:#141a35;
 padding:10px;
-margin-bottom:10px;
+margin-bottom:8px;
 border-radius:6px;
 }
 
@@ -172,52 +160,53 @@ border-radius:6px;
 
 <body>
 
+<!-- Prompt Page -->
+
+<div id="promptPage" class="page active">
+
+<h1 class="aurora">Build Your AI Website</h1>
+
+<input id="sitePrompt" placeholder="Describe your website">
+
+<button onclick="goLogin()">Generate Website</button>
+
+</div>
+
+<!-- Login Page -->
+
+<div id="loginPage" class="page">
+
+<h2>Sign in to Continue</h2>
+
+<input id="email" placeholder="Email">
+
+<button onclick="login()">Sign in with Email</button>
+
+<button onclick="login()">Sign in with Google</button>
+
+</div>
+
+<!-- App -->
+
+<div id="app">
+
 <div class="topbar">
 
-<h2 class="aurora">AI Workforce Pro</h2>
+<h3 class="aurora">AI Workforce</h3>
 
 <div class="nav">
+
 <div>Dashboard</div>
-<div>Workspace</div>
 <div>Pages</div>
 <div>Workforce</div>
 <div>Inbox</div>
 <div>Commits</div>
+
 </div>
 
 </div>
 
 <div class="main">
-
-<!-- Blocks -->
-
-<div class="toolbox">
-
-<h3>Sections</h3>
-
-<div class="block" draggable="true" ondragstart="drag(event,'hero')">Hero</div>
-<div class="block" draggable="true" ondragstart="drag(event,'features')">Features</div>
-<div class="block" draggable="true" ondragstart="drag(event,'gallery')">Gallery</div>
-<div class="block" draggable="true" ondragstart="drag(event,'contact')">Contact</div>
-
-<h3>AI Builder</h3>
-
-<input id="prompt" placeholder="Describe your website">
-<button onclick="generate()">Generate</button>
-
-</div>
-
-<!-- Canvas -->
-
-<div class="canvas" id="canvas"
-ondrop="drop(event)"
-ondragover="allowDrop(event)">
-
-<h2>Website Canvas</h2>
-
-</div>
-
-<!-- AI workspace -->
 
 <div class="sidebar">
 
@@ -225,27 +214,30 @@ ondragover="allowDrop(event)">
 
 <div class="airoom" id="airoom"></div>
 
-<h3>Git Commits</h3>
-
-<div id="commits"></div>
-
 <h3>Inbox</h3>
 
 <div id="inbox"></div>
+
+<h3>Commits</h3>
+
+<div id="commits"></div>
 
 <button onclick="exportSite()">Export Website</button>
 
 </div>
 
-<!-- Chat -->
+<div class="canvas" id="canvas">
 
-<div class="chat">
+<h2>Generating Website...</h2>
 
-<div class="chatlog" id="chatlog"></div>
+</div>
 
-<div class="chatinput">
-<input id="chatmsg">
-<button onclick="chat()">Send</button>
+<div class="preview">
+
+<h3>Live Preview</h3>
+
+<iframe id="previewFrame" style="width:100%;height:90%;border:none;background:white"></iframe>
+
 </div>
 
 </div>
@@ -254,59 +246,44 @@ ondragover="allowDrop(event)">
 
 <script>
 
-/* Drag builder */
+/* Page flow */
 
-function allowDrop(e){e.preventDefault()}
+function goLogin(){
 
-function drag(e,type){
-e.dataTransfer.setData("type",type)
+document.getElementById("promptPage").classList.remove("active")
+document.getElementById("loginPage").classList.add("active")
+
 }
 
-function drop(e){
+function login(){
 
-e.preventDefault()
+document.getElementById("loginPage").classList.remove("active")
+document.getElementById("app").style.display="flex"
 
-let type=e.dataTransfer.getData("type")
-
-let el=document.createElement("div")
-
-if(type=="hero")
-el.innerHTML="<h1>Hero Section</h1><p>Welcome</p>"
-
-if(type=="features")
-el.innerHTML="<h2>Features</h2><ul><li>Fast</li><li>Modern</li></ul>"
-
-if(type=="gallery")
-el.innerHTML="<h2>Gallery</h2><img src='https://picsum.photos/300'>"
-
-if(type=="contact")
-el.innerHTML="<h2>Contact</h2>Email us"
-
-canvas.appendChild(el)
-
-commit("Added "+type+" section")
+generateSite()
 
 }
 
 /* AI agents */
 
-const agents=[
-"https://cdn-icons-png.flaticon.com/512/4140/4140048.png",
-"https://cdn-icons-png.flaticon.com/512/4140/4140061.png",
-"https://cdn-icons-png.flaticon.com/512/4149/4149677.png",
-"https://cdn-icons-png.flaticon.com/512/921/921347.png"
+const employees=[
+
+{name:"Designer",icon:"https://cdn-icons-png.flaticon.com/512/4140/4140048.png"},
+{name:"Developer",icon:"https://cdn-icons-png.flaticon.com/512/4140/4140061.png"},
+{name:"Writer",icon:"https://cdn-icons-png.flaticon.com/512/4149/4149677.png"},
+{name:"SEO",icon:"https://cdn-icons-png.flaticon.com/512/921/921347.png"}
+
 ]
 
 function spawnAgents(){
 
 let room=document.getElementById("airoom")
 
-agents.forEach((src,i)=>{
+employees.forEach((e,i)=>{
 
 let ai=document.createElement("img")
 
-ai.src=src
-
+ai.src=e.icon
 ai.className="ai"
 
 ai.style.left=(i*50)+"px"
@@ -316,8 +293,8 @@ room.appendChild(ai)
 
 setInterval(()=>{
 
-ai.style.left=Math.random()*150+"px"
-ai.style.top=Math.random()*90+"px"
+ai.style.left=Math.random()*160+"px"
+ai.style.top=Math.random()*60+"px"
 
 },3000)
 
@@ -327,77 +304,50 @@ ai.style.top=Math.random()*90+"px"
 
 spawnAgents()
 
-/* AI generator */
+/* AI site generation */
 
-function generate(){
+function generateSite(){
 
-let prompt=document.getElementById("prompt").value
+let prompt=document.getElementById("sitePrompt").value
 
 canvas.innerHTML=""
 
 let hero=document.createElement("div")
 hero.innerHTML="<h1>"+prompt+"</h1>"
 
-let features=document.createElement("div")
-features.innerHTML="<h2>Features</h2><p>Fast modern website</p>"
+let about=document.createElement("div")
+about.innerHTML="<h2>About</h2><p>Generated content</p>"
 
 let contact=document.createElement("div")
-contact.innerHTML="<h2>Contact</h2>Email contact@example.com"
+contact.innerHTML="<h2>Contact</h2>contact@email.com"
 
 canvas.appendChild(hero)
-canvas.appendChild(features)
+canvas.appendChild(about)
 canvas.appendChild(contact)
 
 commit("AI generated website")
+email("AI Builder","Website generated")
 
-email("AI Builder","Site created from prompt")
-
-}
-
-/* Chat */
-
-function chat(){
-
-let msg=document.getElementById("chatmsg").value
-
-log("You: "+msg)
-
-if(msg.includes("add blog")){
-
-let blog=document.createElement("div")
-
-blog.innerHTML="<h2>Blog</h2><p>Latest posts</p>"
-
-canvas.appendChild(blog)
-
-commit("Blog page added")
-
-email("Content AI","Blog section created")
+updatePreview()
 
 }
 
-}
+/* Preview */
 
-/* Logs */
+function updatePreview(){
 
-function log(t){
+let html=canvas.innerHTML
 
-let div=document.createElement("div")
-
-div.innerText=t
-
-chatlog.appendChild(div)
+previewFrame.srcdoc="<html><body>"+html+"</body></html>"
 
 }
 
-/* Commits */
+/* Commit */
 
 function commit(msg){
 
 let div=document.createElement("div")
-
 div.className="commit"
-
 div.innerText=msg
 
 commits.prepend(div)
@@ -424,7 +374,7 @@ function exportSite(){
 
 let html=canvas.innerHTML
 
-let file=`<html><body>${html}</body></html>`
+let file="<html><body>"+html+"</body></html>"
 
 let blob=new Blob([file],{type:"text/html"})
 
@@ -442,7 +392,6 @@ a.click()
 
 </body>
 </html>
-
 
 
 
