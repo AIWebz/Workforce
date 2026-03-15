@@ -6,23 +6,22 @@
 
 <style>
 
-/* ===== GLOBAL ===== */
-
 body{
 margin:0;
-font-family:Segoe UI;
-background:#0c0f1a;
+font-family:Inter,Segoe UI;
+background:#0a0d1f;
 color:white;
+overflow:hidden;
 }
 
-/* ===== AURORA TEXT ===== */
+/* Aurora Title */
 
 .aurora{
 background:linear-gradient(90deg,#3b82f6,#ec4899,#3b82f6);
 background-size:200%;
 -webkit-background-clip:text;
 -webkit-text-fill-color:transparent;
-animation:aurora 6s infinite linear;
+animation:aurora 6s linear infinite;
 }
 
 @keyframes aurora{
@@ -30,128 +29,142 @@ animation:aurora 6s infinite linear;
 100%{background-position:200%}
 }
 
-/* ===== TOP NAV ===== */
+/* Top nav */
 
-.topnav{
+.topbar{
+height:60px;
 display:flex;
 align-items:center;
 justify-content:space-between;
-padding:15px 30px;
-background:#0b1020;
-border-bottom:1px solid #1f2937;
+padding:0 30px;
+background:#060915;
+border-bottom:1px solid #1b2140;
 }
 
-.navlinks{
+.nav{
 display:flex;
-gap:30px;
+gap:25px;
 }
 
-.navlinks div{
+.nav div{
 cursor:pointer;
-opacity:.8;
+opacity:.7;
 }
 
-.navlinks div:hover{
+.nav div:hover{
 opacity:1;
 }
 
-/* ===== LAYOUT ===== */
+/* Layout */
 
-.container{
-padding:40px;
-}
-
-/* ===== CARDS ===== */
-
-.card{
-background:#12172b;
-padding:25px;
-border-radius:12px;
-margin-bottom:25px;
-box-shadow:0 5px 20px rgba(0,0,0,.4);
-}
-
-/* ===== INPUTS ===== */
-
-textarea,input{
-width:100%;
-padding:12px;
-border-radius:8px;
-border:none;
-margin-top:10px;
-background:#1a2040;
-color:white;
-}
-
-button{
-background:linear-gradient(90deg,#3b82f6,#ec4899);
-border:none;
-padding:12px 20px;
-border-radius:10px;
-color:white;
-font-weight:bold;
-cursor:pointer;
-margin-top:15px;
-}
-
-/* ===== EMPLOYEE GRID ===== */
-
-.employee-grid{
-display:grid;
-grid-template-columns:repeat(auto-fill,150px);
-gap:20px;
-}
-
-.employee{
-background:#1a2040;
-border-radius:12px;
-padding:15px;
-text-align:center;
-cursor:pointer;
-}
-
-.employee img{
-width:70px;
-height:70px;
-border-radius:50%;
-margin-bottom:10px;
-}
-
-/* ===== WORKFORCE ===== */
-
-.employee-card{
+.main{
 display:flex;
-align-items:center;
-gap:15px;
-margin-bottom:15px;
-background:#1a2040;
+height:calc(100vh - 60px);
+}
+
+/* Sidebar */
+
+.sidebar{
+width:240px;
+background:#070b1c;
+border-right:1px solid #1b2140;
+padding:20px;
+overflow:auto;
+}
+
+/* Canvas */
+
+.canvas{
+flex:1;
+background:#0e1330;
+padding:20px;
+overflow:auto;
+}
+
+/* Toolbox */
+
+.toolbox{
+width:200px;
+background:#070b1c;
+border-right:1px solid #1b2140;
+padding:20px;
+}
+
+.block{
+background:#1c2245;
 padding:10px;
-border-radius:10px;
+margin-bottom:10px;
+border-radius:6px;
+cursor:grab;
 }
 
-.employee-card img{
+/* AI room */
+
+.airoom{
+height:150px;
+background:#101740;
+position:relative;
+}
+
+/* AI agents */
+
+.ai{
+position:absolute;
 width:45px;
-border-radius:50%;
+transition:1s;
 }
 
-/* ===== INBOX ===== */
+/* Chat */
+
+.chat{
+width:300px;
+background:#070b1c;
+border-left:1px solid #1b2140;
+display:flex;
+flex-direction:column;
+}
+
+.chatlog{
+flex:1;
+overflow:auto;
+padding:10px;
+}
+
+.chatinput{
+display:flex;
+}
+
+.chatinput input{
+flex:1;
+padding:10px;
+background:#0f1435;
+border:none;
+color:white;
+}
+
+.chatinput button{
+width:80px;
+border:none;
+background:linear-gradient(90deg,#3b82f6,#ec4899);
+color:white;
+}
+
+/* Commit timeline */
+
+.commit{
+background:#141a35;
+padding:10px;
+margin-bottom:10px;
+border-radius:6px;
+}
+
+/* Inbox */
 
 .email{
-background:#1a2040;
+background:#141a35;
 padding:10px;
-border-radius:8px;
 margin-bottom:10px;
-cursor:pointer;
-}
-
-/* ===== WEBSITE PREVIEW ===== */
-
-iframe{
-width:100%;
-height:500px;
-border:none;
-border-radius:10px;
-background:white;
+border-radius:6px;
 }
 
 </style>
@@ -159,119 +172,80 @@ background:white;
 
 <body>
 
-<!-- TOP NAV -->
+<div class="topbar">
 
-<div class="topnav">
+<h2 class="aurora">AI Workforce Pro</h2>
 
-<h2 class="aurora">AI Workforce Builder</h2>
-
-<div class="navlinks">
-<div onclick="show('dashboard')">Dashboard</div>
-<div onclick="show('workforce')">Workforce</div>
-<div onclick="show('inbox')">Inbox</div>
-<div onclick="show('builder')">Website Builder</div>
+<div class="nav">
+<div>Dashboard</div>
+<div>Workspace</div>
+<div>Pages</div>
+<div>Workforce</div>
+<div>Inbox</div>
+<div>Commits</div>
 </div>
 
 </div>
 
-<div class="container">
+<div class="main">
 
-<!-- DASHBOARD -->
+<!-- Blocks -->
 
-<div id="dashboard" class="page">
+<div class="toolbox">
 
-<div class="card">
+<h3>Sections</h3>
 
-<h2 class="aurora">Build Websites With Your AI Workforce</h2>
+<div class="block" draggable="true" ondragstart="drag(event,'hero')">Hero</div>
+<div class="block" draggable="true" ondragstart="drag(event,'features')">Features</div>
+<div class="block" draggable="true" ondragstart="drag(event,'gallery')">Gallery</div>
+<div class="block" draggable="true" ondragstart="drag(event,'contact')">Contact</div>
 
-<p>Describe the website you want and your AI employees will build it.</p>
+<h3>AI Builder</h3>
 
-</div>
-
-</div>
-
-<!-- WEBSITE BUILDER -->
-
-<div id="builder" class="page" style="display:none">
-
-<div class="card">
-
-<h3>Describe your website</h3>
-
-<textarea id="prompt" rows="4"
-placeholder="Example: A modern coffee shop website with menu, blog and online ordering"></textarea>
-
-<h3>Choose employees</h3>
-
-<div class="employee-grid">
-
-<div class="employee" onclick="selectRole('designer')">
-<img src="https://cdn-icons-png.flaticon.com/512/921/921347.png">
-Designer
-</div>
-
-<div class="employee" onclick="selectRole('writer')">
-<img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
-Writer
-</div>
-
-<div class="employee" onclick="selectRole('seo')">
-<img src="https://cdn-icons-png.flaticon.com/512/4248/4248443.png">
-SEO
-</div>
-
-<div class="employee" onclick="selectRole('builder')">
-<img src="https://cdn-icons-png.flaticon.com/512/2620/2620971.png">
-Builder
-</div>
-
-<div class="employee" onclick="selectRole('analytics')">
-<img src="https://cdn-icons-png.flaticon.com/512/4149/4149677.png">
-Analytics
-</div>
+<input id="prompt" placeholder="Describe your website">
+<button onclick="generate()">Generate</button>
 
 </div>
 
-<button onclick="buildWebsite()">Build Website</button>
+<!-- Canvas -->
+
+<div class="canvas" id="canvas"
+ondrop="drop(event)"
+ondragover="allowDrop(event)">
+
+<h2>Website Canvas</h2>
 
 </div>
 
-<div class="card">
+<!-- AI workspace -->
 
-<h3>Website Preview</h3>
+<div class="sidebar">
 
-<iframe id="preview"></iframe>
+<h3>AI Workforce</h3>
 
-<button onclick="downloadSite()">Download Website</button>
+<div class="airoom" id="airoom"></div>
 
-</div>
+<h3>Git Commits</h3>
 
-</div>
-
-<!-- WORKFORCE -->
-
-<div id="workforce" class="page" style="display:none">
-
-<div class="card">
-
-<h3>Your AI Employees</h3>
-
-<div id="employees"></div>
-
-</div>
-
-</div>
-
-<!-- INBOX -->
-
-<div id="inbox" class="page" style="display:none">
-
-<div class="card">
+<div id="commits"></div>
 
 <h3>Inbox</h3>
 
-<div id="emails"></div>
+<div id="inbox"></div>
 
+<button onclick="exportSite()">Export Website</button>
+
+</div>
+
+<!-- Chat -->
+
+<div class="chat">
+
+<div class="chatlog" id="chatlog"></div>
+
+<div class="chatinput">
+<input id="chatmsg">
+<button onclick="chat()">Send</button>
 </div>
 
 </div>
@@ -280,190 +254,185 @@ Analytics
 
 <script>
 
-/* ===== NAVIGATION ===== */
+/* Drag builder */
 
-function show(id){
+function allowDrop(e){e.preventDefault()}
 
-document.querySelectorAll(".page").forEach(p=>p.style.display="none")
+function drag(e,type){
+e.dataTransfer.setData("type",type)
+}
 
-document.getElementById(id).style.display="block"
+function drop(e){
+
+e.preventDefault()
+
+let type=e.dataTransfer.getData("type")
+
+let el=document.createElement("div")
+
+if(type=="hero")
+el.innerHTML="<h1>Hero Section</h1><p>Welcome</p>"
+
+if(type=="features")
+el.innerHTML="<h2>Features</h2><ul><li>Fast</li><li>Modern</li></ul>"
+
+if(type=="gallery")
+el.innerHTML="<h2>Gallery</h2><img src='https://picsum.photos/300'>"
+
+if(type=="contact")
+el.innerHTML="<h2>Contact</h2>Email us"
+
+canvas.appendChild(el)
+
+commit("Added "+type+" section")
 
 }
 
-/* ===== EMPLOYEE SYSTEM ===== */
+/* AI agents */
 
-let roles=[]
-let siteHTML=""
+const agents=[
+"https://cdn-icons-png.flaticon.com/512/4140/4140048.png",
+"https://cdn-icons-png.flaticon.com/512/4140/4140061.png",
+"https://cdn-icons-png.flaticon.com/512/4149/4149677.png",
+"https://cdn-icons-png.flaticon.com/512/921/921347.png"
+]
 
-function selectRole(role){
+function spawnAgents(){
 
-if(!roles.includes(role))
-roles.push(role)
+let room=document.getElementById("airoom")
 
-}
+agents.forEach((src,i)=>{
 
-/* ===== INBOX ===== */
+let ai=document.createElement("img")
 
-function sendEmail(title,message){
+ai.src=src
 
-let div=document.createElement("div")
-div.className="email"
-div.innerHTML="<b>"+title+"</b><br>"+message
+ai.className="ai"
 
-document.getElementById("emails").prepend(div)
+ai.style.left=(i*50)+"px"
+ai.style.top="40px"
 
-}
+room.appendChild(ai)
 
-/* ===== WORKFORCE DISPLAY ===== */
+setInterval(()=>{
 
-function renderEmployees(){
+ai.style.left=Math.random()*150+"px"
+ai.style.top=Math.random()*90+"px"
 
-let container=document.getElementById("employees")
-
-container.innerHTML=""
-
-roles.forEach(r=>{
-
-let icon={
-designer:"https://cdn-icons-png.flaticon.com/512/921/921347.png",
-writer:"https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
-seo:"https://cdn-icons-png.flaticon.com/512/4248/4248443.png",
-builder:"https://cdn-icons-png.flaticon.com/512/2620/2620971.png",
-analytics:"https://cdn-icons-png.flaticon.com/512/4149/4149677.png"
-}[r]
-
-let div=document.createElement("div")
-div.className="employee-card"
-
-div.innerHTML="<img src='"+icon+"'>"+r
-
-container.appendChild(div)
+},3000)
 
 })
 
 }
 
-/* ===== WEBSITE GENERATION ===== */
+spawnAgents()
 
-function buildWebsite(){
+/* AI generator */
+
+function generate(){
 
 let prompt=document.getElementById("prompt").value
 
-renderEmployees()
+canvas.innerHTML=""
 
-sendEmail("AI Builder","Building website based on prompt")
+let hero=document.createElement("div")
+hero.innerHTML="<h1>"+prompt+"</h1>"
 
-siteHTML=`
+let features=document.createElement("div")
+features.innerHTML="<h2>Features</h2><p>Fast modern website</p>"
 
-<!DOCTYPE html>
-<html>
-<head>
+let contact=document.createElement("div")
+contact.innerHTML="<h2>Contact</h2>Email contact@example.com"
 
-<style>
+canvas.appendChild(hero)
+canvas.appendChild(features)
+canvas.appendChild(contact)
 
-body{
-font-family:Segoe UI;
-margin:0;
-background:#f9fafb;
-color:#111;
-}
+commit("AI generated website")
 
-header{
-background:linear-gradient(90deg,#3b82f6,#ec4899);
-color:white;
-padding:40px;
-text-align:center;
-}
-
-nav{
-background:#111;
-color:white;
-padding:10px;
-display:flex;
-gap:20px;
-justify-content:center;
-}
-
-section{
-padding:40px;
-}
-
-.card{
-background:white;
-padding:20px;
-margin:20px;
-border-radius:10px;
-box-shadow:0 5px 15px rgba(0,0,0,.1);
-}
-
-</style>
-
-</head>
-
-<body>
-
-<header>
-<h1>${prompt}</h1>
-<p>Built by AI Workforce</p>
-</header>
-
-<nav>
-Home
-About
-Services
-Blog
-Contact
-</nav>
-
-<section>
-
-<div class="card">
-<h2>About</h2>
-<p>This website was generated from the prompt:</p>
-<p><b>${prompt}</b></p>
-</div>
-
-<div class="card">
-<h2>Services</h2>
-<p>AI generated services for your business.</p>
-</div>
-
-<div class="card">
-<h2>Blog</h2>
-<p>Future blog posts generated by AI employees.</p>
-</div>
-
-<div class="card">
-<h2>Contact</h2>
-<p>Email: contact@example.com</p>
-</div>
-
-</section>
-
-</body>
-</html>
-
-`
-
-document.getElementById("preview").srcdoc=siteHTML
-
-sendEmail("Designer","Layout created")
-sendEmail("Writer","Content generated")
-sendEmail("SEO","Metadata optimized")
+email("AI Builder","Site created from prompt")
 
 }
 
-/* ===== DOWNLOAD ===== */
+/* Chat */
 
-function downloadSite(){
+function chat(){
+
+let msg=document.getElementById("chatmsg").value
+
+log("You: "+msg)
+
+if(msg.includes("add blog")){
+
+let blog=document.createElement("div")
+
+blog.innerHTML="<h2>Blog</h2><p>Latest posts</p>"
+
+canvas.appendChild(blog)
+
+commit("Blog page added")
+
+email("Content AI","Blog section created")
+
+}
+
+}
+
+/* Logs */
+
+function log(t){
+
+let div=document.createElement("div")
+
+div.innerText=t
+
+chatlog.appendChild(div)
+
+}
+
+/* Commits */
+
+function commit(msg){
+
+let div=document.createElement("div")
+
+div.className="commit"
+
+div.innerText=msg
+
+commits.prepend(div)
+
+}
+
+/* Inbox */
+
+function email(title,msg){
+
+let div=document.createElement("div")
+
+div.className="email"
+
+div.innerHTML="<b>"+title+"</b><br>"+msg
+
+inbox.prepend(div)
+
+}
+
+/* Export */
+
+function exportSite(){
+
+let html=canvas.innerHTML
+
+let file=`<html><body>${html}</body></html>`
+
+let blob=new Blob([file],{type:"text/html"})
 
 let a=document.createElement("a")
 
-let blob=new Blob([siteHTML],{type:"text/html"})
-
 a.href=URL.createObjectURL(blob)
 
-a.download="ai-website.html"
+a.download="website.html"
 
 a.click()
 
