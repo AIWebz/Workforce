@@ -1,93 +1,144 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Advanced AI Workforce Website Builder</title>
+<title>AI Workforce Website Builder</title>
 <style>
-body{
-font-family:Arial;
-margin:0;
-display:flex;
-height:100vh;
-background:#0f172a;
-color:white;
-overflow:hidden;
-}
-.sidebar{
-width:220px;
-background:#020617;
-padding:20px;
-}
+body{font-family:Arial;margin:0;display:flex;height:100vh;background:#0f172a;color:white;overflow:hidden;}
+.sidebar{width:220px;background:#020617;padding:20px;}
 .sidebar h2{margin-top:0;}
 .sidebar li{list-style:none;padding:10px 0;cursor:pointer;}
 .main{flex:1;padding:20px;overflow:auto;}
 .rightpanel{width:300px;background:#020617;padding:20px;overflow:auto;}
-textarea{width:100%;height:100px;background:#111827;color:white;border:none;padding:10px;}
+textarea{width:100%;height:100px;background:#111827;color:white;border:none;padding:10px;margin-top:10px;}
 button{background:#3b82f6;color:white;border:none;padding:10px 20px;margin-top:10px;cursor:pointer;}
 .card{background:#111827;padding:10px;margin-top:10px;border-radius:6px;animation:pulse 2s infinite;}
 @keyframes pulse{0%{opacity:0.8;}50%{opacity:1;}100%{opacity:0.8;}}
-.slider{width:100%;}
+.slider{width:100%;margin-top:10px;}
 .preview{background:white;color:black;padding:20px;margin-top:20px;}
-.chat{position:fixed;bottom:0;left:220px;right:300px;background:#020617;padding:10px;display:flex;}
-.chat input{flex:1;padding:10px;border:none;}
+h3{margin-bottom:5px;}
+.selectable-roles{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;}
+.role-card{background:#111827;padding:5px 10px;border-radius:6px;cursor:pointer;}
+.role-card.selected{background:#2563eb;}
 </style>
 </head>
 <body>
 
 <div class="sidebar">
-<h2>AI Workforce</h2>
-<ul>
-<li>Projects</li>
-<li>AI Employees</li>
-<li>Workforce</li>
-<li>Reports</li>
-<li>Settings</li>
-</ul>
+<h2>Workforces</h2>
+<ul id="workforceList"></ul>
+<button onclick="createWorkforcePrompt()">+ Create Workforce</button>
 </div>
 
 <div class="main">
-<h1>Advanced AI Website Builder</h1>
-<p>Describe the website you want:</p>
-<textarea id="description" placeholder="Example: Modern coffee shop with menu, blog, and contact page"></textarea>
-<br><br>
-<label>AI Employees</label>
-<input type="range" min="1" max="10" value="3" id="slider" class="slider">
-<p id="price">Estimated Cost: $30/month</p>
-<button onclick="buildWebsite()">Start AI Workforce</button>
-<div id="employees"></div>
+<h1>AI Website Builder</h1>
+
+<div id="createWorkforceSection">
+<p>Enter Workforce Name:</p>
+<input type="text" id="workforceName" placeholder="e.g. Coffee Shop Team">
+<button onclick="createWorkforce()">Create Workforce</button>
+</div>
+
+<div id="setupWorkforceSection" style="display:none;">
+<h3>Setup Your Workforce</h3>
+<label>Number of Employees:</label>
+<input type="range" min="1" max="10" value="3" id="employeeCount" class="slider">
+<p id="employeeCountText">3 employees selected</p>
+
+<h3>Select Employee Roles:</h3>
+<div class="selectable-roles" id="roleSelection"></div>
+
+<h3>Website Prompt:</h3>
+<textarea id="websitePrompt" placeholder="Describe the website you want..."></textarea>
+<button onclick="buildWebsite()">Build Website</button>
+</div>
+
+<div id="employees" style="margin-top:20px;"></div>
 <div id="preview"></div>
 <button onclick="downloadWebsite()">Download Website</button>
 </div>
 
 <div class="rightpanel">
-<h3>AI Workforce Activity</h3>
+<h3>Activity Log</h3>
 <div id="activity"></div>
-</div>
-
-<div class="chat">
-<input id="chatInput" placeholder="Command your AI workforce...">
-<button onclick="chat()">Send</button>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script>
-const slider=document.getElementById("slider")
-const price=document.getElementById("price")
-const roles=[
-"AI Website Builder",
-"AI Designer",
-"AI Content Writer",
-"AI SEO Specialist",
-"AI Marketing Assistant",
-"AI Analytics Manager",
-"AI Support Agent"
-]
-let websiteData={};
 
-slider.oninput=function(){
-let cost=slider.value*10
-price.innerText="Estimated Cost: $"+cost+"/month"
+// === Global Data ===
+let workforces = []
+let selectedWorkforce = null
+let websiteData = {}
+const rolesList = ["AI Website Builder","AI Designer","AI Content Writer","AI SEO Specialist","AI Marketing Assistant","AI Analytics Manager","AI Support Agent"]
+
+// === Sidebar / Workforce Management ===
+function createWorkforcePrompt(){
+document.getElementById("createWorkforceSection").style.display="block"
+document.getElementById("setupWorkforceSection").style.display="none"
+document.getElementById("workforceName").value=""
 }
 
+function createWorkforce(){
+let name=document.getElementById("workforceName").value.trim()
+if(!name){alert("Please enter a workforce name."); return;}
+let workforce={name:name,id:Date.now(),employees:[],roles:[]}
+workforces.push(workforce)
+selectedWorkforce=workforce
+updateWorkforceList()
+setupWorkforceUI()
+}
+
+function updateWorkforceList(){
+let list=document.getElementById("workforceList")
+list.innerHTML=""
+workforces.forEach(wf=>{
+let li=document.createElement("li")
+li.innerText=wf.name
+li.style.cursor="pointer"
+li.onclick=()=>selectWorkforce(wf.id)
+list.appendChild(li)
+})
+}
+
+function selectWorkforce(id){
+selectedWorkforce=workforces.find(w=>w.id===id)
+setupWorkforceUI()
+}
+
+function setupWorkforceUI(){
+document.getElementById("createWorkforceSection").style.display="none"
+document.getElementById("setupWorkforceSection").style.display="block"
+document.getElementById("employeeCount").value=selectedWorkforce.employees.length || 3
+document.getElementById("employeeCountText").innerText=selectedWorkforce.employees.length || 3 + " employees selected"
+
+// setup roles
+let container=document.getElementById("roleSelection")
+container.innerHTML=""
+rolesList.forEach(role=>{
+let card=document.createElement("div")
+card.className="role-card"
+card.innerText=role
+if(selectedWorkforce.roles.includes(role)) card.classList.add("selected")
+card.onclick=()=>{
+if(selectedWorkforce.roles.includes(role)){
+selectedWorkforce.roles=selectedWorkforce.roles.filter(r=>r!==role)
+card.classList.remove("selected")
+}else{
+selectedWorkforce.roles.push(role)
+card.classList.add("selected")
+}
+}
+container.appendChild(card)
+})
+}
+
+// === Employee Count Slider ===
+document.getElementById("employeeCount").oninput=function(){
+let count=this.value
+document.getElementById("employeeCountText").innerText=count+" employees selected"
+}
+
+// === AI Simulation ===
 function log(text){
 let div=document.createElement("div")
 div.className="card"
@@ -95,90 +146,72 @@ div.innerText=text
 document.getElementById("activity").prepend(div)
 }
 
-function createEmployees(count){
-let container=document.getElementById("employees")
-container.innerHTML=""
-for(let i=0;i<count;i++){
-let role=roles[i%roles.length]
-let card=document.createElement("div")
-card.className="card"
-card.innerHTML="<b>"+role+"</b><br>Status: Working"
-container.appendChild(card)
-}
-}
-
+// Build Website Function
 function buildWebsite(){
-let description=document.getElementById("description").value
-let count=slider.value
-createEmployees(count)
-log("AI Website Builder created page structure")
-log("AI Designer generated layout")
-log("AI Content Writer wrote homepage content")
-log("AI SEO Specialist optimized metadata")
+if(!selectedWorkforce){alert("Please select a workforce"); return;}
+let description=document.getElementById("websitePrompt").value.trim()
+if(!description){alert("Please enter a website prompt."); return;}
+let count=parseInt(document.getElementById("employeeCount").value)
+selectedWorkforce.employees=[]
+for(let i=0;i<count;i++){
+let role=selectedWorkforce.roles[i % selectedWorkforce.roles.length] || rolesList[i % rolesList.length]
+selectedWorkforce.employees.push({role:role,status:"working"})
+log(role+" started working on the website")
+}
 
-// Generate real HTML website
+// Generate website preview
 websiteData.html=`<!DOCTYPE html>
 <html>
 <head>
-<title>AI Generated Website</title>
+<title>${selectedWorkforce.name} Website</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <h1>${description}</h1>
-<nav>
-<ul>
+<nav><ul>
 <li>Home</li><li>About</li><li>Services</li><li>Blog</li><li>Contact</li>
-</ul>
-</nav>
+</ul></nav>
 <section>
 <h2>About</h2>
-<p>This page was generated automatically by your AI workforce.</p>
+<p>Generated by the AI workforce '${selectedWorkforce.name}'.</p>
 </section>
 <section>
 <h2>Blog</h2>
-<p>Sample blog post content created by AI Content Writer.</p>
+<p>Sample blog content created by AI Content Writer.</p>
 </section>
 </body>
-</html>
-`;
+</html>`
 
 websiteData.css=`body{font-family:Arial;margin:0;padding:20px;}nav ul{list-style:none;display:flex;gap:20px;background:#f3f3f3;padding:10px;}section{margin-top:20px;}`
 
+// Show employees
+let empContainer=document.getElementById("employees")
+empContainer.innerHTML="<h3>Employees:</h3>"
+selectedWorkforce.employees.forEach(e=>{
+let div=document.createElement("div")
+div.className="card"
+div.innerHTML="<b>"+e.role+"</b><br>Status: "+e.status
+empContainer.appendChild(div)
+})
+
+// Show preview
 let preview=document.getElementById("preview")
 preview.innerHTML=`<div class="preview"><h1>Website Preview</h1><p>${description}</p></div>`
 }
 
+// === Download Website ===
 function downloadWebsite(){
-let zip = new JSZip()
+if(!websiteData.html){alert("Build a website first"); return;}
+let zip=new JSZip()
 zip.file("index.html",websiteData.html)
 zip.file("style.css",websiteData.css)
 zip.generateAsync({type:"blob"}).then(function(content){
 let a=document.createElement("a")
 a.href=URL.createObjectURL(content)
-a.download="AI_Generated_Website.zip"
+a.download=selectedWorkforce.name.replace(/\s+/g,"_")+".zip"
 a.click()
 })
-log("Website files ready for download!")
-}
-
-function chat(){
-let cmd=document.getElementById("chatInput").value.toLowerCase()
-if(cmd.includes("contact")){
-log("AI Builder added Contact Page")
-websiteData.html=websiteData.html.replace("</body>",`<section><h2>Contact</h2><p>Contact form placeholder</p></section></body>`)
-}
-else if(cmd.includes("color")){
-log("AI Designer updated color theme")
-websiteData.css+="body{background:#e0f2fe;}"
-}
-else if(cmd.includes("blog")){
-log("AI Content Writer created blog section")
-websiteData.html=websiteData.html.replace("</body>",`<section><h2>New Blog</h2><p>AI generated blog content.</p></section></body>`)
-}
-else{
-log("AI Workforce processed command: "+cmd)
-}
-document.getElementById("chatInput").value=""
+log("Website ready for download!")
 }
 </script>
 </body>
